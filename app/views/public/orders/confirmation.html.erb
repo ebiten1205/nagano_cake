@@ -71,9 +71,9 @@
         <%#= hidden_field_tag 'order[registered_address_id]', params[:order][:registered_address_id] %>
       <% elsif @delivery_address == "new_address" %>
       <!-- 今後のためにもf.hidden_fieldを使っていく。f.hidden_fieldはrails用？らしいので下記の記述のように使う。-->
-      <%= f.hidden_field :new_postal_code, value: @postal_code %>
-      <%= f.hidden_field :new_address, value: @address %>
-      <%= f.hidden_field :new_name, value: @name %>
+      <%= f.hidden_field :postal_code, value: @postal_code %>
+      <%= f.hidden_field :address, value: @address %>
+      <%= f.hidden_field :direction, value: @name %>
         <%#= hidden_field_tag 'order[new_postal_code]', params[:order][:new_postal_code] %>
         <%#= hidden_field_tag 'order[new_address]', params[:order][:new_address] %>
         <%#= hidden_field_tag 'order[new_name]', params[:order][:new_name] %>

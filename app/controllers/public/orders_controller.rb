@@ -46,7 +46,7 @@ class Public::OrdersController < ApplicationController
   
   def create
     
-      @order = Order.new
+      @order = Order.new(order_params)
       @order.customer_id = current_customer.id
       @order.postage = 800
       @cart_items = CartItem.where(customer_id: current_customer.id)
@@ -56,7 +56,7 @@ class Public::OrdersController < ApplicationController
       end
       @cart_items_price = ary.sum
       @order.total_payment = @order.postage + @cart_items_price
-      @order.payment_method = params[:order][:payment_method]
+      #@order.payment_method = params[:order][:payment_method]
       
       delivery_address = params[:order][:delivery_address]
       case delivery_address
@@ -70,19 +70,19 @@ class Public::OrdersController < ApplicationController
       @order.postal_code = selected.postal_code
       @order.address = selected.address
       @order.name = selected.name
-      when "new_address"
-      @order.postal_code = params[:order][:postal_code]
-      @order.address = params[:order][:address]
-      @order.name = params[:order][:name]
+      #when "new_address"
+      #@order.postal_code = params[:order][:postal_code]
+      #@order.address = params[:order][:address]
+      #@order.name = params[:order][:name]
       end
       
       # ↓saveの後に!をつけて、起動させることでデータがちゃんと保存されるかを確認できる
       if @order.save!
             @cart_items.each do |cart_item|
-               OrderDetail.create!(order_id: @order.id, item_id: cart_item.item.id, price: cart_item.item.price, amount: cart_item.amount)
+               OrderDetail.create!(order_id: @order.id, item_id: cart_item.item.id, purchase_price: cart_item.item.price, amount: cart_item.amount)
             end
             @cart_items.destroy_all
-            redirect_to completed_orders_path
+            redirect_to orders_completed_path
       else
             flash[:notice] = "項目に不備があります"
             redirect_to orders_new_path
@@ -110,7 +110,7 @@ class Public::OrdersController < ApplicationController
   private
   
   def order_params
-    params.require(:order).permit(:payment_method, :postal_code, :address, :name, :customer_id, :postage, :amount)
+    params.require(:order).permit(:payment_method, :postal_code, :address, :direction, :customer_id, :postage, :amount)
   end
   
   def order_is_valid

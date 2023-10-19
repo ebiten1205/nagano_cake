@@ -27,7 +27,7 @@ Rails.application.routes.draw do
      get "/orders/completed"=>"orders#completed"
      post "/orders"=>"orders#create"
      get "/orders"=>"orders#index"
-     get "/orders/:id"=>"orders#show"
+     get "/orders/:id"=>"orders#show", as: "customer_order"
      patch "/customers/withdrawal"=>"customers#withdrawal"
      delete "/cart_items/destroy_all"=>"cart_items#destroy_all", as: "destroy_all_cart_items"
   end
