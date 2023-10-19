@@ -1,0 +1,40 @@
+<h1>ショッピングカート</h1>
+
+<table>
+  <thead>
+    <th>商品名</th>
+    <th>単価(税込)</th>
+    <th>数量</th>
+    <th>小計</th>
+    <th></th>
+  </thead>
+  
+  <tbody>
+    <% @cart_items.each do |cart_item| %>
+      <tr>
+          <td>
+              <%= image_tag cart_item.item.get_image %><%= cart_item.item.name %></td>
+          <td>
+              <!--消費税を求めるメソッドは商品に紐づくメソッドなのでitem
+              モデルにdef with_tax_price (price * 1.1).floor endと記述すること
+              で下記の記述で求めることができ、可読性があがる。-->
+              <%= cart_item.item.with_tax_price %>
+          </td>
+          <td><%= cart_item.amount %> </td>
+          <td>
+              <!--小計を求めるメソッドはカート機能で使用するメソッドのため
+              cart_itemモデルにdef subtotal item.with_tax_price * amount end
+              と記述することで下記の記述で求めることができ、可読性がよくなる。-->
+              <%= cart_item.subtotal %>
+          </td>
+          <td><%= link_to "削除する", cart_items_path, method: :delete, "data-confirm" => "本当に削除しますか？" %></td>
+          <!--↓ここの@totalはブックマークのサイトを参考にして、cart_item.rbとitem.rbに合計金額を求めるものを定義し、
+          コントローラーに@totalを定義したもの（詳しくは合計金額を求めるブックマークのサイトを確認）。-->
+          <% @total +=  cart_item.subtotal %>
+          <%= link_to "カートを空にする", destroy_all_cart_items_path, method: :delete,
+            "data-confirm" => "本当に空にしますか？" %>
+          <td><%= link_to "情報入力に進む", orders_new_path %></td>
+      </tr>
+    <% end %> 
+  </tbody>
+</table>

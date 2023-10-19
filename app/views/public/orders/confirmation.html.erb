@@ -1,0 +1,86 @@
+<div class="container p-3">
+  <div class="row">
+  <div class="col-md-12">
+<h3>注文情報確認</h3>
+
+    <table class="table">
+      <tr>
+        <td>商品名</td>
+        <td>単価(税込)</td>
+        <td>数量</td>
+        <td>小計</td>
+      </tr>
+      <% @cart_items.each do |cart_item| %>
+        <tr>
+          <td>
+            <%= image_tag cart_item.item.image, size: "100x80" %>
+            <%= cart_item.item.name %>
+          </td>
+          <td><%= cart_item.item.with_tax_price %></td>
+          <td><%= cart_item.amount %></td>
+          <td><%= cart_item.subtotal %></td>
+          <%= @total += cart_item.subtotal %>
+        </tr>
+      <% end %>
+    </table>
+
+    <table class="table">
+      <tr>
+        <td>送料</td>
+        <td><%= @postage %></td>
+      </tr>
+      <tr>
+        <td>商品合計</td>
+        <td><%= @total %></td>
+      </tr>
+      <tr>
+        <td>請求金額</td>
+        <td><%= @total + @postage %></td>
+      </tr>
+    </table>
+
+    <h4>支払い方法</h4>
+
+    <% if @selected_payment_method == "クレジットカード" %>
+      クレジットカード
+    <% else %>
+      銀行振込
+    <% end %>
+
+    <h4>お届け先</h4>
+    
+    <%= @selected_address %>
+    
+    <%= form_with model: @order,url: orders_path, local: true, method: :post do |f| %>
+			<%#= f.hidden_field :customer_id , value: current_customer.id %>
+			<%#= f.hidden_field :postage , value: @postage %>
+			<%#= f.hidden_field :address, value: address %>
+			<%#= f.hidden_field :payment_method, value: params[:order][:payment_method] %>
+			<%#= f.submit '注文を確定する', class: 'btn btn-success btn-lg' %>
+      
+      <%= f.hidden_field :customer_id, value: current_customer.id %>
+      <%= f.hidden_field :postage, value: @postage %>
+      <%= f.hidden_field :address, value: @address %>
+      <%= f.hidden_field :payment_method, value: @payment_method %>
+      <%= f.hidden_field :delivery_address, value: @delivery_address %>
+      <%#= hidden_field_tag 'order[payment_method]', @selected_payment_method %>
+      <%#= hidden_field_tag 'order[delivery_address]', @delivery_address %>
+
+      <% if @delivery_address == "registered_address" %>
+        <%= f.hidden_field :registered_address_id, value: @registered_address %>
+        <%#= hidden_field_tag 'order[registered_address_id]', params[:order][:registered_address_id] %>
+      <% elsif @delivery_address == "new_address" %>
+      <!-- 今後のためにもf.hidden_fieldを使っていく。f.hidden_fieldはrails用？らしいので下記の記述のように使う。-->
+      <%= f.hidden_field :new_postal_code, value: @postal_code %>
+      <%= f.hidden_field :new_address, value: @address %>
+      <%= f.hidden_field :new_name, value: @name %>
+        <%#= hidden_field_tag 'order[new_postal_code]', params[:order][:new_postal_code] %>
+        <%#= hidden_field_tag 'order[new_address]', params[:order][:new_address] %>
+        <%#= hidden_field_tag 'order[new_name]', params[:order][:new_name] %>
+      <% end %>
+      <%= f.submit "注文を確定する", class: "btn btn-success" %>
+    <% end %>
+      
+  </div>
+  </div>
+</div>

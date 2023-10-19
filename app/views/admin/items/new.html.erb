@@ -1,0 +1,14 @@
+<h1>商品新規登録</h1>
+<!-- 今回は顧客側と管理者側でそれぞれitemコントローラーを使用しているため@itemだけだと顧客側のitemコントローラーのurlに飛んでしまう（rails routesでurl確認）ため、url:～というようにurlを指定する必要がある。-->
+<%= form_with model: @item,url:admin_items_path,local:true do |f| %>
+<h4>商品画像</h4>
+<%= f.file_field :image, accept: "image/*" %>
+<h4>商品名</h4>
+<%= f.text_field :name %>
+<h4>商品説明</h4>
+<%= f.text_area :introduction %>
+<h4>税抜価格</h4>
+<%= f.text_field :price %>円
+<br>
+<%= f.submit '新規登録' %>
+<% end %>

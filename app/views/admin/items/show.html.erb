@@ -1,0 +1,9 @@
+<h1>商品詳細</h1>
+
+<%= image_tag @item.get_image %>
+<p>商品名: <%= @item.name %></p><br>
+<p>商品説明: <%= @item.introduction %></p><br>
+
+<p>税込価格（税抜価格）: <%= @item.price %> 円</p>
+
+<%= link_to "編集する", edit_admin_item_path %>

@@ -1,0 +1,35 @@
+<div class="container">
+	<div class="row">
+	<div class="col-lg-3">
+		<h3>注文履歴一覧</h3>
+	</div>
+	</div>
+	<div class="row">
+	<div class="col-lg-offset-1 col-lg-10">
+<table class="table">
+<tr class="active">
+	<th>購入日時</th>
+	<th>購入者</th>
+	<th>注文個数</th>
+	<th>注文ステータス</th>
+</tr>
+<% @index_orders.each do |order|%>
+<tr>
+	<td><%= link_to order.created_at.to_s(:datetime_jp), admin_order_path(order) %></td>
+	<td><%= order.customer.name %></td>
+	<td><% order_items = OrderItem.where(order_id:order.id) %>
+		<% count = 0 %>
+		<% order_items.each do |order_item| %>
+				<% count += order_item.count %>
+			<% end %>
+		<%= count %></td>
+	<td><%= order.order_status %></td>
+</tr>
+<% end %>
+</table>
+</div>
+<div class="col-lg-12">
+	<%= paginate @index_orders %>
+</div>
+</div>
+</div>

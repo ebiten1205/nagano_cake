@@ -1,0 +1,27 @@
+<div>
+  <%= image_tag @item.get_image %>
+  <br>
+  <%= @item.name %><br>
+  <%= @item.introduction %><br>
+  ￥<%= @item.price %>(税込)
+  <br>
+  数量を選択して下さい。
+  <br>
+  <!-- カートに数量を決めて商品を追加するためにまずform_withでフォームを作る。
+  if customer_signed_in?は会員がログインしていないときでも詳細ページ飛ぶことを
+  防止するための記述。f.hidden_fieldではログイン中の会員IDと商品IDの2つをカート
+  内商品のFKに代入する（自分で作ったER図を見ると分かりやすい）。f.selectは
+  文字通りセレクトボックスを作るフォームヘルパーで下記の記述のようにすること
+  で1から10までの数量を選択できる。最後にボタンメソッド（btn）でカートにいれる。
+  customer_id,item_id,amountがちゃんとカラムの定義がされているかをマイグレーション
+  ファイルに確認する。またcart_itemコントローラーにcreateアクションの定義をして
+  いないとカートに情報が送れないのでそこも注意する。-->
+  <%= form_with model: @cart_item,url: cart_items_path, method: :post,local: true do |f| %>
+    <% if customer_signed_in? %>
+      <%= f.hidden_field :customer_id, :value => current_customer.id %>
+    <% end %>
+    <%= f.hidden_field :item_id, value: @item.id %>
+    <%= f.select :amount, *[1..10] %>
+    <%= f.submit "カートに入れる", class: "btn btn-success btn-sm"%>
+  <% end %>
+</div>

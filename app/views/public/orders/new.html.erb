@@ -1,0 +1,55 @@
+<div>
+  <%= flash[:notice] %>
+</div>
+<div class="container p-3">
+  <div class="row">
+  <div class="col-md-12">
+<h1>注文情報入力</h1>
+
+<%= form_with model: @order,url: orders_confirmation_path, local: true do |f| %>
+
+支払方法<br>
+<!-- ラジオボタンは (%= f.radio_button :プロパティ名, "フォームで送る値" %)で
+使用することができ、ラジオボタンは設定するプロパティ名を一緒にすることで
+同じプロパティ名のラジオボタンの内1つを選択することができる。-->
+
+<!--またラベルを使うことで画面上でどちらの項目を選択したかが分かりやすくなる
+（rails sでサーバーを開いて確認）。-->
+<%= f.radio_button :payment_method, "クレジットカード" %>
+<%= f.label :payment_method_credit_card, "クレジットカード" %>
+<br>
+<%= f.radio_button :payment_method, "銀行振込" %>
+<%= f.label :payment_method_transfer, "銀行振込" %>
+<br>
+お届け先<br>
+
+<h4>お届け先</h4>
+    <%= f.radio_button :delivery_address, "customer_address" %>
+    <%= f.label :delivery_address, "ご自身の住所" %>
+    〒<%= current_customer.postal_code + " " + current_customer.address + " " + current_customer.last_name + current_customer.first_name %>
+    <br>
+    <!-- options_from_collection_for_selectはセレクトボックス（ドロップダウンリスト)
+    などを作成するのに使用するヘルパーメソッドの1つで下記の記述のように
+    第1引数に配列やデータベースのレコードを指定し、
+    第2引数にオプションの値として使用したいカラム（ここでは:id）を、
+    第3引数にオプションの表示として使用したいカラム（ここでは:registered_address_display）を指定する
+    ことで使用できる。-->
+    <%= f.radio_button :delivery_address, "registered_address" %>
+    <%= f.label :delivery_address, "登録済住所から選択" %>
+    <%= f.select :delivery_address, options_from_collection_for_select(@registered_addresses, :id, :registered_address_display) %>
+    <br>
+    <%= f.radio_button :delivery_address, "new_address" %>
+    <%= f.label :delivery_address, "新しいお届け先" %>
+    <p>郵便番号(ハイフンなし)</p>
+    <%= f.text_field :postal_code, {placeholder: "0000000"} %>
+    <p>住所</p>
+    <%= f.text_area :address, {placeholder: "東京都渋谷区代々木神園町0-0"} %>
+    <p>宛名</p>
+    <%= f.text_field :name, {placeholder: "令和道子"} %>
+    <br>
+    <%= f.submit "確認画面へ進む", class: "btn btn-info" %>
+    
+<% end %>
+</div>
+</div>
+</div>

@@ -1,0 +1,14 @@
+<h1>商品編集</h1>
+<!--update(更新)に関しても今回は管理者側と会員側の2つがあるため、urlを指定して、メソッドもしていする。詳しくはアプリケーションを完成させようの5章を参照する。-->
+<%= form_with model: @item, url: admin_item_path(@item.id), method: :patch do |f| %>
+<label for="inputImage">商品画像</label><br>
+<%= f.file_field :image, placeholder: "Image", accept: "image/*" %><br>
+<label for="inputImage">商品名</label><br>
+<%= f.text_field :name, autofocus: true, id:"inputName", placeholder:"Name" %><br>
+<label for="inputName">商品説明</label><br>
+<%= f.text_area :introduction, autofocus: true, id:"inputName", placeholder:"introduction" %><br>
+<label for="inputName">税抜価格</label><br>
+<%= f.text_field :price, autofocus: true, id:"inputName", placeholder:"Name" %> 円<br>
+<%= f.submit "変更を保存" %>
+<% end %>
+

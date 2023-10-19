@@ -1,0 +1,12 @@
+<h1><%= @customer.last_name %><%= @customer.first_name %>さんの会員詳細</h1>
+
+<div>
+  <p>会員ID</p>
+  <p>氏名: <%= @customer.last_name %> <%= @customer.first_name %></p><br>
+  <p>フリガナ: <%= @customer.last_name_kana %> <%= @customer.last_name_kana %></p><br>
+  <p>郵便番号: <%= @customer.postal_code %></p><br>
+  <p>住所: <%= @customer.address %></p><br>
+  <p>電話番号: <%= @customer.telephone_number %></p><br>
+  <p>メールアドレス: <%= @customer.email %></p><br>
+  <p><%= link_to "編集する", edit_admin_customer_path %></p>
+</div>
