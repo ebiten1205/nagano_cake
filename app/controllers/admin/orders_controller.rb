@@ -18,24 +18,19 @@ class Admin::OrdersController < ApplicationController
 
    def show
    	@order = Order.find(params[:id])
-   	@order_items = OrderItem.where(order_id:[@order.id])
+   	@order_details = OrderDetail.where(order_id:[@order.id])
    end
 
    def update
    	@order = Order.find(params[:id])
-      @order_items = OrderItem.where(order_id: [@order.id])
+      @order_details = OrderDetail.where(order_id: [@order.id])
       @order.update(order_params)
-      if params[:order][:order_status] == "入金確認"
-         @order_items.each do |order_item|
-            order_item.update!(create_status: 1)
-         end
-      end
       redirect_to admin_order_path(@order)
    end
 
    private
    def order_params
-      params.require(:order).permit(:customer_id, :postcode, :address, :payment_method, :order_status, :postage, :payment)
+      params.require(:order).permit(:customer_id, :postcode, :address, :payment_method, :postage, :payment)
    end
 
 end

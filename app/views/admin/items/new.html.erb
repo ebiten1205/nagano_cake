@@ -1,14 +1,29 @@
-<h1>商品新規登録</h1>
+<% if flash[:notice] %>
+  <div class="alert alert-danger text-center">
+      <%= flash[:notice] %>
+  </div>
+<% end %>
+<div class="container">
+  <div class="row">
+  <div class="col-lg-3">
+<h3>商品新規登録</h3>
+</div>
+  </div>
+  <div class="row">
+    <div class="col-md-9 col-md-offset-2">
 <!-- 今回は顧客側と管理者側でそれぞれitemコントローラーを使用しているため@itemだけだと顧客側のitemコントローラーのurlに飛んでしまう（rails routesでurl確認）ため、url:～というようにurlを指定する必要がある。-->
 <%= form_with model: @item,url:admin_items_path,local:true do |f| %>
 <h4>商品画像</h4>
 <%= f.file_field :image, accept: "image/*" %>
 <h4>商品名</h4>
-<%= f.text_field :name %>
+<%= f.text_field :name, {placeholder: "商品名"} %>
 <h4>商品説明</h4>
-<%= f.text_area :introduction %>
+<%= f.text_area :introduction, {placeholder: "ここに説明文を記述します"} %>
 <h4>税抜価格</h4>
-<%= f.text_field :price %>円
+<%= f.text_field :price, {placeholder: "1000"} %>円
 <br>
 <%= f.submit '新規登録' %>
 <% end %>
+</div>
+</div>
+</div>

@@ -1,4 +1,14 @@
-<h1>商品編集</h1>
+<% if flash[:notice] %>
+	<div class="alert alert-danger text-center">
+			<%= flash[:notice] %>
+	</div>
+<% end %>
+<div class="container">
+  <div class="row">
+  <div class="col-lg-3">
+<h3>商品編集</h3>
+</div>
+<div class="col-md-9 col-md-offset-2">
 <!--update(更新)に関しても今回は管理者側と会員側の2つがあるため、urlを指定して、メソッドもしていする。詳しくはアプリケーションを完成させようの5章を参照する。-->
 <%= form_with model: @item, url: admin_item_path(@item.id), method: :patch do |f| %>
 <label for="inputImage">商品画像</label><br>
@@ -11,4 +21,7 @@
 <%= f.text_field :price, autofocus: true, id:"inputName", placeholder:"Name" %> 円<br>
 <%= f.submit "変更を保存" %>
 <% end %>
+</div>
+</div>
+</div>
 

@@ -1,0 +1,17 @@
+<div class="items">
+  <!-- 新着商品を出すためにはfirstメソッドとlastメソッドの2つを覚えておく。（ブックマークに保存済み）。-->
+  <!--homesコントローラーの定義も確認。-->
+	<% index_items.each do |index_item| %>
+		<%= link_to item_path(index_item) do %>
+		<div class="itembox">
+			<%= image_tag index_item.get_image, style: "width: 350px; height: 250px; margin-top:80px;" %>
+			<dl>
+			    <dt>商品名</dt>
+			        <dd><%= index_item.name %></dd>
+			    <dt>価格</dt>
+			        <dd>¥ <%= (index_item.price).floor %></dd>
+			</dl>
+		</div>
+		<% end %>
+	<% end %>
+	</div>

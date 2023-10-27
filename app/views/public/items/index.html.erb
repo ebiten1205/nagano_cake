@@ -1,11 +1,13 @@
-<h1>商品一覧</h1>
+<div class="container">
+<h3>商品一覧</h3>
 
 <% @item.each do |item| %>
   <div>
     <%= link_to item_path(item.id) do %>
-    <%= image_tag item.get_image %>
+    <%= image_tag item.get_image, style: "width: 350px; height: 250px; margin-top:80px;" %>
     <% end %>
     <%= item.name %>
     ￥<%= item.price %>
   </div>
+</div>
 <% end %>

@@ -2,7 +2,7 @@ class Public::CartItemsController < ApplicationController
     def index
         @cart_items = CartItem.all
         # ↓合計金額の初期値を0にするための定義
-        @total = 0
+        @total = 0 
     end
     
     def create
@@ -19,6 +19,13 @@ class Public::CartItemsController < ApplicationController
     @cart_item.save!
     redirect_to cart_items_path
     end
+    # プログラミング全体に言えることだが記述は上から順番に読まれるためそれを踏まえてコードを記述することが大事。
+    def destroy_all
+        current_customer.cart_items
+        cart_items = current_customer.cart_items
+        cart_items.destroy_all
+        redirect_to cart_items_path, notice: 'カートが空になりました。' 
+    end
     
     def destroy
         cart_item = CartItem.find(params[:id])
@@ -26,10 +33,11 @@ class Public::CartItemsController < ApplicationController
         redirect_to cart_items_path
     end
     
-    def destroy_all
-    CartItem.destroy_all
-    current_customer.cart_item.destroy_all
-    redirect_to cart_items_path, notice: 'カートが空になりました。' 
+    def update
+		cart_item = CartItem.find(params[:id])
+		if cart_item.update(cart_item_params)
+			redirect_to cart_items_path
+		end
     end
 
  private

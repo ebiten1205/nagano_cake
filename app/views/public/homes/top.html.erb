@@ -1,1 +1,30 @@
-トップページ
+<% if flash[:notice] %>
+    <div class="alert alert-info text-center">
+    <%= flash[:notice] %>
+    </div>
+<% end %>
+<div class="search">
+<div class="container">
+	<div class="row">
+	</div>
+</div>
+</div>
+<div class="eyecatch">
+	<div class="contentbox">
+		<h1 style="font-weight: bold;">ようこそ、ながのCAKEへ！
+		このサイトは、ケーキ販売のECサイトになります。<br>
+		会員でない方も商品の閲覧はできますが、<br>
+		購入には会員登録 が必要になります。<br></h1>
+	</div>
+</div>
+
+
+<div class="container">
+		<div class="col-lg-10">
+			<h1 style="font-weight: bold;">新着商品 <i class="fas fa-shopping-cart"></i></h1>
+			<%= render 'public/items/index', index_items:@recomend_items %>
+		</div>
+			<%= link_to "全ての商品を見る", items_path, class: "btn btn-default btn-lg",style: "margin-bottom:30px;" %>
+		</div>
+	</div>
+</div>

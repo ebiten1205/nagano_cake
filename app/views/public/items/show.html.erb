@@ -1,5 +1,11 @@
+<% if flash[:notice] %>
+<div class="alert alert-info text-center">
+		<%= flash[:notice] %>
+</div>
+	<% end %>
+<div class="container">
 <div>
-  <%= image_tag @item.get_image %>
+  <%= image_tag @item.get_image, style: "width: 350px; height: 250px; margin-top:80px;" %>
   <br>
   <%= @item.name %><br>
   <%= @item.introduction %><br>

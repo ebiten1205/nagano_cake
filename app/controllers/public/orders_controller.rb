@@ -63,7 +63,7 @@ class Public::OrdersController < ApplicationController
       when "customer_address"
       @order.postal_code = current_customer.postal_code
       @order.address = current_customer.address
-      @order.name = current_customer.last_name + current_customer.first_name
+      @order.direction = current_customer.last_name + current_customer.first_name
       when "registered_address"
       Addresse.find(params[:order][:registered_address_id])
       selected = Addresse.find(params[:order][:registered_address_id])

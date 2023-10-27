@@ -1,40 +1,78 @@
-<h1>ショッピングカート</h1>
-
-<table>
-  <thead>
-    <th>商品名</th>
-    <th>単価(税込)</th>
-    <th>数量</th>
-    <th>小計</th>
-    <th></th>
-  </thead>
-  
-  <tbody>
+<div class="container">
+	<div class="row">
+		<div class="col-lg-4">
+<h3>ショッピングカート</h3>
+</div>
+	<div class="col-lg-4">
+	</div>
+	<div class="col-lg-4">
+		<% if @cart_items.present? == true %>
+			<%= link_to 'カートを空にする',  destroy_all_cart_items_path, method: :delete,
+			"data-confirm" => "本当に空にしますか？", class: 'btn btn-danger'%>
+		<% end %>
+	</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-10 col-xs-offset-1">
+			<table class="table table-bordered">
+        <thead>
+          <tr class="active">
+            <th>商品名</th>
+            <th>単価(税込)</th>
+            <th>数量</th>
+            <th>小計</th>
+            <th></th>
+          </tr>
+        </thead>
+    <% total = 0 %>
     <% @cart_items.each do |cart_item| %>
+    <tbody>
       <tr>
           <td>
-              <%= image_tag cart_item.item.get_image %><%= cart_item.item.name %></td>
+              <%= image_tag cart_item.item.get_image, style: "width: 50px; height: 30px;", class: "pull-left" %><%= cart_item.item.name %></td>
           <td>
               <!--消費税を求めるメソッドは商品に紐づくメソッドなのでitem
               モデルにdef with_tax_price (price * 1.1).floor endと記述すること
               で下記の記述で求めることができ、可読性があがる。-->
               <%= cart_item.item.with_tax_price %>
           </td>
+          <td><%= form_with model:cart_item, url:cart_item_path(cart_item), method: :patch do |f| %>
+					<%= f.hidden_field :item_id, value: cart_item.item.id %>
+					<%= f.hidden_field :customer_id, value: current_customer.id %>
+					<%= f.select :amount, *[1..10] %>
+					<%#= f.text_field :amount , value:cart_item.amount %>
+					<%= f.submit "変更", class: 'btn btn-primary'%>
+					<% end %></td>
           <td><%= cart_item.amount %> </td>
-          <td>
+          <td style="line-height: 30px;">
               <!--小計を求めるメソッドはカート機能で使用するメソッドのため
               cart_itemモデルにdef subtotal item.with_tax_price * amount end
               と記述することで下記の記述で求めることができ、可読性がよくなる。-->
-              <%= cart_item.subtotal %>
+              <%= cart_item.subtotal %>円
           </td>
-          <td><%= link_to "削除する", cart_items_path, method: :delete, "data-confirm" => "本当に削除しますか？" %></td>
+          <td><%= link_to "削除する", destroy_cart_items_path(cart_item), method: :delete, "data-confirm" => "本当に削除しますか？" %></td>
           <!--↓ここの@totalはブックマークのサイトを参考にして、cart_item.rbとitem.rbに合計金額を求めるものを定義し、
           コントローラーに@totalを定義したもの（詳しくは合計金額を求めるブックマークのサイトを確認）。-->
-          <% @total +=  cart_item.subtotal %>
-          <%= link_to "カートを空にする", destroy_all_cart_items_path, method: :delete,
-            "data-confirm" => "本当に空にしますか？" %>
-          <td><%= link_to "情報入力に進む", orders_new_path %></td>
+          <% total +=  cart_item.subtotal %>
       </tr>
     <% end %> 
-  </tbody>
-</table>
+    </tbody>
+  </table>
+  </div>
+  </div>
+  <div class="row">
+		<div class="col-lg-4">
+			<%= link_to '買い物を続ける', root_path, class: 'btn btn-primary' %>
+		</div>
+	<div class="col-lg-3 col-xs-offset-4">
+		<table class="table table-bordered">
+		<tr><th class="active">合計金額</th><td><%= total %>円</td></tr>
+		</table>
+	</div>
+	<% if @cart_items.present? == true %>
+		<%= link_to  orders_new_path ,class: 'btn btn-success btn-lg' do %>
+			<p style= "margin: 0; padding: 10px 50px">情報入力へ進む</p>
+		<% end %>
+	<% end %>
+	</div>
+</div>

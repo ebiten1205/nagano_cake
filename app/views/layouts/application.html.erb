@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    
+    <script src="https://kit.fontawesome.com/369622d0f9.js" crossorigin="anonymous"></script>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
@@ -21,11 +22,20 @@
         <%= link_to "会員一覧", admin_customers_path %>
       </li>
       <li>
+        <%= link_to "注文履歴一覧", admin_orders_path %>
+      </li>
+      <li>
         <%= link_to "ログアウト", destroy_admin_session_path, method: :delete %>
       </li>
       <% elsif customer_signed_in? %>
       <li>
         <%= link_to "マイページ", customers_my_page_path %>
+      </li>
+      <li>
+        <%= link_to "商品一覧", items_path %>
+      </li>
+      <li>
+        <%= link_to "カート", cart_items_path %>
       </li>
       <li>
         <%= link_to "ログアウト", destroy_customer_session_path, method: :delete %>

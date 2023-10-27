@@ -7,13 +7,13 @@
 	<div class="row">
 		<div class="col-lg-offset-1 col-lg-6">
 			<div class="row"><span class="orders">購入者   <small><%=link_to @order.customer.name, admin_customer_path(@order.customer) %></small></span></div>
-			<div class="row"><span class="orders">配送先   <small><%= @order.address %></small></span></div>
+			<!--注文日の出し方はconfig/locales/ja.ymlを確認、またはブックマークから参照-->
+			<div class="row"><span class="orders">注文日   <small><%= l @order.created_at, format: :time %> </small></span></div>
+			<div class="row"><span class="orders">配達先   <small><%= @order.address %></small></span></div>
 			<div class="row"><span class="orders">支払方法    <small><%= @order.payment_method %></small></span></div>
-			<div class="row"><span class="orders">注文ステータス</span>
-			<%= form_with model:@order, url: admin_order_path(@order) do |f|%>
-				<%= f.select :order_status ,Order.order_statuses.keys.to_a, {},{include_blank: @order.order_status}  %>
-				<%= f.submit '更新',class: 'btn btn-primary' %>
-			<% end %></div>
+			<%#= form_with model:@order, url: admin_order_detail_path(@order) do |f|%>
+				<%#= f.submit '更新',class: 'btn btn-primary' %>
+			<%# end %></div>
 		</div>
 	</div>
 	<div class="col-lg-8">
@@ -23,19 +23,17 @@
 		<th>単価（税込）</th>
 		<th>数量</th>
 		<th>小計</th>
-		<th>製作ステータス</th>
 	</tr>
-		<% @order_items.each do |order_item| %>
+		<% @order_details.each do |order_detail| %>
 			<tr>
-				<td><%= order_item.item.name %></td>
-				<td><%= include_tax(order_item.item.price) %></td>
-				<td><%= order_item.count %></td>
-				<td><%= include_tax(order_item.item.price) * order_item.count %></td>
+				<td><%= order_detail.item.name %></td>
+				<td><%= (order_detail.item.price * 1.1).floor %></td>
+				<td><%= order_detail.amount %></td>
+				<td><%= (order_detail.item.price * 1.1).floor * order_detail.amount %></td>
 				<td>
-					<%= form_with model:order_item, url: admin_order_item_path(order_item) do |f|%>
-						<%= f.select :create_status ,OrderItem.create_statuses.keys.to_a, {},{include_blank: order_item.create_status} %>
-						<%= f.submit '更新',class: 'btn btn-primary' %>
-					<% end %>
+					<%#= form_with model:order_detail, url: admin_order_detail_path(order_detail) do |f|%>
+						<%#= f.submit '更新',class: 'btn btn-primary' %>
+					<%# end %>
 				</td>
 			</tr>
 		<% end %>
@@ -43,9 +41,9 @@
 	</div>
 <div class="col-lg-4">
 <dl class="dl-horizontal orders">
-	<dt>商品合計</dt>  <dd><%= @order.payment - @order.postage %>円</dd>
+	<dt>商品合計</dt>  <dd><%= @order.total_payment - @order.postage %>円</dd>
 	<dt>送料</dt>  <dd><%= @order.postage %>円</dd>
-	<dt>請求合計金額</dt>  <dd><%= @order.payment %>円</dd>
+	<dt>請求合計金額</dt>  <dd><%= @order.total_payment %>円</dd>
 </dl>
 </div>
 </div>
